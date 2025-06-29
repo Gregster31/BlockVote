@@ -37,7 +37,12 @@ const App = () => {
             setIsConnected(true);
             setWalletAddress(address);
           }}
+          onDisconnect={() => {
+            setIsConnected(false);
+            setWalletAddress('');
+          }}
         />
+
 
         {isConnected && <VotingPanel />}
         
