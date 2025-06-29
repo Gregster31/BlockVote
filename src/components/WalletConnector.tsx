@@ -1,6 +1,7 @@
 import React from 'react';
 import { Wallet } from 'lucide-react';
 import { BrowserProvider } from 'ethers';
+import { truncateAddress } from '../utils/helper';
 
 interface Props {
   isConnected: boolean;
@@ -44,7 +45,7 @@ const WalletConnector: React.FC<Props> = ({ isConnected, walletAddress, onConnec
           <div className="flex items-center">
             <div className="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
             <span className="text-green-400 font-semibold">Connected: </span>
-            <span className="ml-2 font-mono text-gray-300">{walletAddress}</span>
+            <span className="ml-2 font-mono text-gray-300">{truncateAddress(walletAddress)}</span>
           </div>
         </div>
       )}
