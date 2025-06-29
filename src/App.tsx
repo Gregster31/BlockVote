@@ -33,9 +33,9 @@ const App = () => {
         <WalletConnector
           isConnected={isConnected}
           walletAddress={walletAddress}
-          onConnect={() => {
+          onConnect={(address) => {
             setIsConnected(true);
-            setWalletAddress('0x742d...8f3a');
+            setWalletAddress(address);
           }}
         />
 

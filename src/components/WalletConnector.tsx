@@ -1,18 +1,39 @@
 import React from 'react';
 import { Wallet } from 'lucide-react';
+import { BrowserProvider } from 'ethers';
 
 interface Props {
   isConnected: boolean;
   walletAddress: string;
-  onConnect: () => void;
+  onConnect: (address: string) => void;
 }
 
 const WalletConnector: React.FC<Props> = ({ isConnected, walletAddress, onConnect }) => {
+  const handleConnect = async () => {
+    if (!window.ethereum) {
+      alert('MetaMask is not installed. Please install it to use this feature.');
+      return;
+    }
+
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+
+      onConnect(address);
+    } catch (err) {
+      console.error('MetaMask connection error:', err);
+      alert('Failed to connect wallet. See console for details.');
+    }
+  };
+
   return (
     <div className="flex justify-center mb-12">
       {!isConnected ? (
         <button
-          onClick={onConnect}
+          onClick={handleConnect}
           className="flex items-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25"
         >
           <Wallet className="w-6 h-6 mr-3" />
