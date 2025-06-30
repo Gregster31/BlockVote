@@ -1,7 +1,7 @@
 import artifact from "../../artifacts/contracts/Voting.sol/Voting.json";
 import { BrowserProvider, Contract } from "ethers";
 
-const CONTRACT_ADDRESS = "0xC64994C9E243F6405dcC9b2953d2B7Cc6370e3f8"; 
+const CONTRACT_ADDRESS = "0xCba911F7a58b1A90DA84632258E5898285803c2D"; 
 
 export async function getCandidates() {
   const provider = new BrowserProvider(window.ethereum);

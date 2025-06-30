@@ -1,118 +1,193 @@
-import React, { useEffect, useState } from 'react';
-import { Vote, Zap, Users } from 'lucide-react';
-import { getCandidates } from '../utils/contract';
+import React, { useState, useEffect } from "react";
+import { Vote, Zap, Users } from "lucide-react";
+import {
+  getCandidates,
+  voteForCandidate,
+  getVoteCounts,
+  hasVoted,
+} from "../utils/blockchainHelpers";
 
 interface Candidate {
-  id: bigint;
+  id: number;
   name: string;
   party: string;
-  imageURL: string;
+  image: string;
   slogan: string;
   platform: string[];
 }
 
 const VotingPanel = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [voteCount, setVoteCount] = useState<number[]>([]);
   const [selectedCandidate, setSelectedCandidate] = useState<number | null>(null);
-  const [voteCount, setVoteCount] = useState<Record<string, number>>({});
+  const [userAddress, setUserAddress] = useState<string | null>(null);
+  const [hasUserVoted, setHasUserVoted] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Load blockchain data on mount
   useEffect(() => {
-    async function fetchCandidates() {
-      try {
-        const data = await getCandidates();
-        setCandidates(data);
+    async function loadData() {
+      setLoading(true);
+      setError(null);
 
-        // Added more initial vote counts for hype
-        const initVotes: Record<string, number> = {};
-        data.forEach((candidate) => {
-          initVotes[`candidate${candidate.id}`] = Math.floor(Math.random() * 300);
-        });
-        setVoteCount(initVotes);
-      } catch (err) {
-        console.error("Failed to fetch candidates:", err);
+      try {
+        // Get connected wallet address
+        if (!window.ethereum) throw new Error("MetaMask not detected");
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const address = accounts[0];
+        setUserAddress(address);
+
+        // Fetch candidates
+        const candidatesFromChain = await getCandidates();
+        setCandidates(candidatesFromChain);
+
+        // Fetch vote counts
+        const counts = await getVoteCounts();
+        setVoteCount(counts);
+
+        // Check if user has voted
+        const voted = await hasVoted(address);
+        setHasUserVoted(voted);
+      } catch (err: any) {
+        setError(err.message || "Failed to load blockchain data");
       }
+
+      setLoading(false);
     }
 
-    fetchCandidates();
+    loadData();
+
+    // Optionally: setup interval to refresh vote counts every 10s
+    const interval = setInterval(async () => {
+      try {
+        const counts = await getVoteCounts();
+        setVoteCount(counts);
+      } catch {
+        // silently fail refresh
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const handleVote = (candidateId: number) => {
-    setSelectedCandidate(candidateId);
-    setVoteCount(prev => ({
-      ...prev,
-      [`candidate${candidateId}`]: (prev[`candidate${candidateId}`] || 0) + 1,
-    }));
-    setTimeout(() => setSelectedCandidate(null), 2000);
+  const handleVote = async (candidateId: number) => {
+    if (hasUserVoted) return alert("You have already voted!");
+
+    try {
+      setSelectedCandidate(candidateId);
+      await voteForCandidate(candidateId);
+
+      // Refresh vote counts & mark user voted
+      const counts = await getVoteCounts();
+      setVoteCount(counts);
+      setHasUserVoted(true);
+
+      alert("Vote successfully submitted!");
+    } catch (err: any) {
+      alert(err.message || "Vote failed");
+    } finally {
+      setSelectedCandidate(null);
+    }
   };
 
-  const totalVotes = Object.values(voteCount).reduce((acc, val) => acc + val, 0);
+  if (loading) {
+    return (
+      <div className="text-center text-lg mt-10 text-blue-400">
+        Loading blockchain data...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-lg mt-10 text-red-500">
+        Error: {error}
+      </div>
+    );
+  }
+
+  const totalVotes = voteCount.reduce((a, b) => a + b, 0);
 
   return (
     <div className="space-y-12">
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-2">2025 Presidential Election</h2>
         <p className="text-gray-400">Cast your vote securely on the blockchain</p>
+        {hasUserVoted && (
+          <p className="text-green-400 mt-1 font-semibold">
+            ✅ You have already voted
+          </p>
+        )}
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-        {candidates.map((candidate) => (
-          <div
-            key={candidate.id.toString()}
-            className={`relative bg-gray-800/30 backdrop-blur-sm border-2 rounded-2xl p-8 transition-all duration-500 hover:scale-105 ${
-              selectedCandidate === Number(candidate.id)
-                ? 'border-green-400 shadow-2xl shadow-green-400/25 animate-pulse'
-                : 'border-gray-700 hover:border-blue-400'
-            }`}
-          >
-            {selectedCandidate === Number(candidate.id) && (
-              <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold animate-bounce">
-                Vote Recorded!
-              </div>
-            )}
+        {candidates.map((candidate) => {
+          const candidateVotes = voteCount[candidate.id] || 0;
+          return (
+            <div
+              key={candidate.id}
+              className={`relative bg-gray-800/30 backdrop-blur-sm border-2 rounded-2xl p-8 transition-all duration-500 hover:scale-105 ${
+                selectedCandidate === candidate.id
+                  ? "border-green-400 shadow-2xl shadow-green-400/25 animate-pulse"
+                  : "border-gray-700 hover:border-blue-400"
+              }`}
+            >
+              {selectedCandidate === candidate.id && (
+                <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold animate-bounce">
+                  Vote Recorded!
+                </div>
+              )}
 
-            <div className="text-center mb-6">
-              <div className="relative inline-block">
-                <img
-                  src={candidate.imageURL}
-                  alt={candidate.name}
-                  className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-purple-400/50"
-                />
-                <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-2">
-                  <Vote className="w-5 h-5" />
+              <div className="text-center mb-6">
+                <div className="relative inline-block">
+                  <img
+                    src={candidate.image}
+                    alt={candidate.name}
+                    className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-purple-400/50"
+                  />
+                  <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-2">
+                    <Vote className="w-5 h-5" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold mb-1">{candidate.name}</h3>
+                <p className="text-purple-400 font-semibold">{candidate.party}</p>
+                <p className="text-gray-400 italic">"{candidate.slogan}"</p>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold mb-3 text-blue-400">
+                  Key Platform:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {candidate.platform.map((item, index) => (
+                    <span
+                      key={index}
+                      className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 px-3 py-1 rounded-full text-sm"
+                    >
+                      {item}
+                    </span>
+                  ))}
                 </div>
               </div>
-              <h3 className="text-2xl font-bold mb-1">{candidate.name}</h3>
-              <p className="text-purple-400 font-semibold">{candidate.party}</p>
-              <p className="text-gray-400 italic">"{candidate.slogan}"</p>
-            </div>
 
-            <div className="mb-6">
-              <h4 className="text-lg font-semibold mb-3 text-blue-400">Key Platform:</h4>
-              <div className="flex flex-wrap gap-2">
-                {candidate.platform.map((item, index) => (
-                  <span key={index} className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 px-3 py-1 rounded-full text-sm">
-                    {item}
+              <button
+                onClick={() => handleVote(candidate.id)}
+                disabled={hasUserVoted || selectedCandidate === candidate.id}
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-green-600 disabled:to-green-700 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-xl"
+              >
+                {selectedCandidate === candidate.id ? (
+                  <span className="flex items-center justify-center">
+                    <Zap className="w-5 h-5 mr-2 animate-spin" />
+                    Vote Submitted!
                   </span>
-                ))}
-              </div>
+                ) : (
+                  `Vote for ${candidate.name}`
+                )}
+              </button>
             </div>
-
-            <button
-              onClick={() => handleVote(Number(candidate.id))}
-              disabled={selectedCandidate === Number(candidate.id)}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-green-600 disabled:to-green-700 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-xl"
-            >
-              {selectedCandidate === Number(candidate.id) ? (
-                <span className="flex items-center justify-center">
-                  <Zap className="w-5 h-5 mr-2 animate-spin" />
-                  Vote Submitted!
-                </span>
-              ) : (
-                `Vote for ${candidate.name}`
-              )}
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 max-w-4xl mx-auto">
@@ -123,12 +198,13 @@ const VotingPanel = () => {
 
         <div className="grid md:grid-cols-2 gap-8">
           {candidates.map((candidate) => {
-            const key = `candidate${candidate.id}`;
-            const candidateVotes = voteCount[key] || 0;
-            const percentage = totalVotes > 0 ? (candidateVotes / totalVotes) * 100 : 0;
+            const candidateVotes = voteCount[candidate.id] || 0;
+            const percentage = totalVotes
+              ? (candidateVotes / totalVotes) * 100
+              : 0;
 
             return (
-              <div key={candidate.id.toString()} className="text-center">
+              <div key={candidate.id} className="text-center">
                 <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6">
                   <h4 className="text-xl font-semibold mb-2">{candidate.name}</h4>
                   <div className="text-4xl font-bold text-blue-400 mb-2">
@@ -153,10 +229,14 @@ const VotingPanel = () => {
 
         <div className="text-center mt-6 pt-6 border-t border-gray-700">
           <p className="text-gray-400">
-            Total Votes Cast: <span className="text-white font-semibold">{totalVotes.toLocaleString()}</span>
+            Total Votes Cast:{" "}
+            <span className="text-white font-semibold">
+              {totalVotes.toLocaleString()}
+            </span>
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            🔒 All votes are cryptographically secured and immutable on the blockchain
+            🔒 All votes are cryptographically secured and immutable on the
+            blockchain
           </p>
         </div>
       </div>
