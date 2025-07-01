@@ -1,4 +1,4 @@
-![BlockVote banner](...)
+![BlockVote_banner](https://github.com/user-attachments/assets/cd82b910-74f1-4996-9cd7-38008c57b92e)
 
 A secure and transparent decentralized application (dApp) that allows users to cast votes using blockchain technology. Built with a modern web stack and Ethereum smart contracts, it ensures tamper-proof, one-person-one-vote elections.
 
