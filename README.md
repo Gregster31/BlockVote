@@ -1,19 +1,31 @@
-![BlockVote_banner](https://github.com/user-attachments/assets/cd82b910-74f1-4996-9cd7-38008c57b92e)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cd82b910-74f1-4996-9cd7-38008c57b92e" alt="BlockVote_banner" />
+</p>
 
-<a href="#">
-  <img src="https://img.shields.io/badge/Built%20with-Ethers.js-purple" alt="Built with Ethers.js" height="24">
-  <img src="https://img.shields.io/badge/Powered%20by-Ethereum-3c3c3d" alt="Powered by Ethereum" height="24">
-  <img src="https://img.shields.io/badge/Smart%20Contracts-Hardhat-yellow" alt="Hardhat" height="24">
-  <img src="https://img.shields.io/badge/Frontend-React-blue" alt="React" height="24">
-  <img src="https://img.shields.io/badge/Web3%20Wallet-MetaMask-f6851b" alt="MetaMask" height="24">
-  <img src="https://img.shields.io/badge/Network-Sepolia%20Testnet-5c4ee5" alt="Ethereum Testnet" height="24">
-</a>
+<p align="center">
+  <a href="#">
+    <img src="https://img.shields.io/badge/Built%20with-Ethers.js-purple" alt="Built with Ethers.js" height="24">
+    <img src="https://img.shields.io/badge/Powered%20by-Ethereum-3c3c3d" alt="Powered by Ethereum" height="24">
+    <img src="https://img.shields.io/badge/Smart%20Contracts-Hardhat-yellow" alt="Hardhat" height="24">
+    <img src="https://img.shields.io/badge/Frontend-React-blue" alt="React" height="24">
+    <img src="https://img.shields.io/badge/Web3%20Wallet-MetaMask-f6851b" alt="MetaMask" height="24">
+    <img src="https://img.shields.io/badge/Network-Sepolia%20Testnet-5c4ee5" alt="Ethereum Testnet" height="24">
+  </a>
+</p>
 
-
-
-A secure and transparent decentralized application (dApp) that allows users to cast votes using blockchain technology. Built with a modern web stack and Ethereum smart contracts, it ensures tamper-proof, one-person-one-vote elections.
+<p align="center">
+  <em>DApp that allows users to cast votes using blockchain technology, ensuring tamper-proof, one-person-one-vote elections.</em>
+</p>
 
 ---
+
+## 🎥 Demo
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=j6zuWR3-y0A" target="_blank">
+    <img src="https://img.youtube.com/vi/j6zuWR3-y0A/0.jpg" alt="Watch the demo video" width="640">
+  </a>
+</p>
 
 ## 🔧 Tech Stack
 
