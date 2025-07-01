@@ -1,5 +1,16 @@
 ![BlockVote_banner](https://github.com/user-attachments/assets/cd82b910-74f1-4996-9cd7-38008c57b92e)
 
+<a href="#">
+  <img src="https://img.shields.io/badge/Built%20with-Ethers.js-purple" alt="Built with Ethers.js" height="24">
+  <img src="https://img.shields.io/badge/Powered%20by-Ethereum-3c3c3d" alt="Powered by Ethereum" height="24">
+  <img src="https://img.shields.io/badge/Smart%20Contracts-Hardhat-yellow" alt="Hardhat" height="24">
+  <img src="https://img.shields.io/badge/Frontend-React-blue" alt="React" height="24">
+  <img src="https://img.shields.io/badge/Web3%20Wallet-MetaMask-f6851b" alt="MetaMask" height="24">
+  <img src="https://img.shields.io/badge/Network-Sepolia%20Testnet-5c4ee5" alt="Ethereum Testnet" height="24">
+</a>
+
+
+
 A secure and transparent decentralized application (dApp) that allows users to cast votes using blockchain technology. Built with a modern web stack and Ethereum smart contracts, it ensures tamper-proof, one-person-one-vote elections.
 
 ---
