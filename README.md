@@ -42,7 +42,7 @@
 - **Hardhat** (for local development, testing & deployment)
 
 ### 🔗 Blockchain
-- **Ethereum Testnet (e.g. Sepolia or Goerli)**
+- **Ethereum Testnet (Sepolia)**
 - **MetaMask Wallet**
 
 ---
