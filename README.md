@@ -17,12 +17,10 @@ A secure and transparent decentralized application (dApp) that allows users to c
 ### 🔌 Backend / Smart Contracts
 - **Solidity** (for voting contract)
 - **Hardhat** (for local development, testing & deployment)
-- **Alchemy or Infura** (for Ethereum node provider)
 
 ### 🔗 Blockchain
 - **Ethereum Testnet (e.g. Sepolia or Goerli)**
 - **MetaMask Wallet**
-- **Etherscan** (for contract verification)
 
 ---
 
@@ -51,7 +49,6 @@ PRIVATE_KEY="YOUR_KEY_HERE"
 ### 4. Compile and Deploy Smart Contract
 
 ```bash
-cd blockchain
 npm install
 npx hardhat compile
 npx hardhat run scripts/deploy.js --network sepolia
@@ -62,7 +59,6 @@ Copy the deployed contract address and paste it in CONTRACT_ADDRESS
 ### 5. Run the Frontend
 
 ```bash
-cd ..
 npm run dev
 ```
 
