@@ -1,89 +1,92 @@
-# 🗳️ SecureVote — Blockchain Voting DApp
+![BlockVote banner](...)
 
-SecureVote is a beautifully designed decentralized voting application built with **React**, **Vite**, **Tailwind CSS**, and **Lucide Icons**. It's designed to simulate a secure Ethereum-powered voting experience.
-
-> 🚀 Live demo coming soon!
+A secure and transparent decentralized application (dApp) that allows users to cast votes using blockchain technology. Built with a modern web stack and Ethereum smart contracts, it ensures tamper-proof, one-person-one-vote elections.
 
 ---
 
-## 📦 Tech Stack
+## 🔧 Tech Stack
 
-- ⚛️ React + Vite  
-- 🎨 Tailwind CSS  
-- 🔌 Ethers.js (Ethereum-ready)  
-- 🧠 Lucide-react icons  
-- 🦊 MetaMask simulation (real wallet integration optional)
+### 🖥️ Frontend
+- **React** (via Vite)
+- **TypeScript**
+- **Tailwind CSS**
+- **Lucide React Icons**
+- **Ethers.js** (for blockchain interaction)
+- **MetaMask** (for wallet authentication)
+
+### 🔌 Backend / Smart Contracts
+- **Solidity** (for voting contract)
+- **Hardhat** (for local development, testing & deployment)
+- **Alchemy or Infura** (for Ethereum node provider)
+
+### 🔗 Blockchain
+- **Ethereum Testnet (e.g. Sepolia or Goerli)**
+- **MetaMask Wallet**
+- **Etherscan** (for contract verification)
 
 ---
 
-## 🛠 Installation
+## 🛠️ Installation
 
-First, clone the repository:
-
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/voting-dapp.git
-cd voting-dapp
+git clone https://github.com/your-username/blockchain-voting-app.git
+cd blockchain-voting-app
 ```
 
-Then install dependencies:
-
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
----
+### 3. Setup Environment Variables
 
-## 🚀 Running Locally
+Create a `.env` file in the root directory:
 
-Start the development server:
+```env
+SEPOLIA_RPC="YOUR_KEY_HERE"
+PRIVATE_KEY="YOUR_KEY_HERE"
+```
+
+### 4. Compile and Deploy Smart Contract
 
 ```bash
+cd blockchain
+npm install
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+Copy the deployed contract address and paste it in CONTRACT_ADDRESS
+
+### 5. Run the Frontend
+
+```bash
+cd ..
 npm run dev
 ```
 
 ---
 
-## 🧪 Features
+## ✨ Features
 
-- 👛 Connect (simulated) MetaMask wallet  
-- 👥 Vote for candidates  
-- 📈 Real-time vote counts  
-- 🎨 Stylish UI animations and effects  
-- 🔐 Placeholder for smart contract voting logic
-
----
-
-## 📁 Project Structure
-
-```bash
-src/
-├── App.jsx                  # Entry point
-├── BlockchainVotingApp.jsx # Main voting component
-├── index.css                # Tailwind CSS base styles
-├── main.jsx                 # React DOM rendering
-public/
-  └── index.html
-```
+- ✅ **Wallet Integration** – Connect MetaMask to authenticate voters.
+- ✅ **Candidate Listing** – Live data fetched directly from the smart contract.
+- ✅ **Secure Voting** – Vote cast is signed and recorded immutably on the Ethereum blockchain.
+- ✅ **One Person, One Vote** – Each address can vote only once.
+- ✅ **Live Vote Count** – Real-time updates pulled from blockchain.
+- ✅ **Beautiful UI** – Smooth animations and accessible design using Tailwind CSS.
+- ✅ **Decentralized** – No backend server required. All voting data is on-chain.
 
 ---
 
-## 🎯 Next Steps
+## 🧠 Smart Contract Overview
 
-- ✅ Integrate MetaMask and request accounts  
-- ✅ Use `ethers.js` to interact with smart contracts  
-- 🧾 Deploy a `Vote.sol` contract via Hardhat  
-- 🌐 Deploy to [Vercel](https://vercel.com) or [Netlify](https://www.netlify.com)
-
----
-
-## 🛡 Disclaimer
-
-This app currently simulates Ethereum blockchain behavior for UI demonstration purposes. Voting logic is **not yet connected to a smart contract**.
+Written in Solidity, the `Voting` smart contract:
+- Stores candidate info on-chain
+- Allows one vote per Ethereum address
+- Prevents double voting
+- Exposes public functions to retrieve candidates and vote counts
 
 ---
 
-## 📃 License
-
-MIT — feel free to use and modify.
-
----

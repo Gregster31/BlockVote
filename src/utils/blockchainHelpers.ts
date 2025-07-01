@@ -55,3 +55,8 @@ export async function getVoteCounts() {
     const counts = await Promise.all(promises);
     return counts.map((c) => parseInt(c.toString()));
 }
+
+export const truncateAddress = (address: string) => {
+  if (!address) return '';
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};

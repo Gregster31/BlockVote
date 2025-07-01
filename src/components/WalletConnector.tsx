@@ -1,7 +1,7 @@
 import React from 'react';
 import { Wallet, LogOut } from 'lucide-react';
 import { BrowserProvider } from 'ethers';
-import { truncateAddress } from '../utils/helper';
+import { truncateAddress } from '../utils/blockchainHelpers';
 
 interface Props {
   isConnected: boolean;
