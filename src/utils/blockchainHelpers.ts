@@ -4,7 +4,7 @@ import VotingContractABI from "../../artifacts/contracts/Voting.sol/Voting.json"
 
 // const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS!;
 // const CONTRACT_ADDRESS = import.meta.env.CONTRACT_ADDRESS!;
-const CONTRACT_ADDRESS = "0xCba911F7a58b1A90DA84632258E5898285803c2D";
+const CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS";
 
 
 export async function getProviderAndContract() {

@@ -112,7 +112,7 @@ const VotingPanel = () => {
   return (
     <div className="space-y-12">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">2025 Presidential Election</h2>
+        <h2 className="text-3xl font-bold mb-2">2026 Provincial Elections</h2>
         <p className="text-gray-400">Cast your vote securely on the blockchain</p>
         {hasUserVoted && (
           <p className="text-green-400 mt-1 font-semibold">
