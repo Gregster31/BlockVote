@@ -30,8 +30,8 @@ A secure and transparent decentralized application (dApp) that allows users to c
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/blockchain-voting-app.git
-cd blockchain-voting-app
+git clone https://github.com/Gregster31/BlockVote.git
+cd BlockVote
 ```
 
 ### 2. Install Dependencies
