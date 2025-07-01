@@ -14,7 +14,8 @@
 </p>
 
 <p align="center">
-  <em>DApp that allows users to cast votes using blockchain technology, ensuring tamper-proof, one-person-one-vote elections.</em>
+  <em>DApp that allows users to cast votes using blockchain technology, ensuring tamper-proof, one-person-one-vote elections.</em> <br> <br>
+  <a href="https://gregster31.github.io/BlockVote/">LIVE DEMO</a>
 </p>
 
 ---
